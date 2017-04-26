@@ -1,0 +1,97 @@
+# Define the port where the API gateway server would be running
+server:
+  port: 8765
+
+# The OAuth2 server definition that would be used to send the authorization requests to
+authserver:
+    hostname: localhost
+    port: 8899
+    contextPath: userauth
+
+# Define the routes which determine what URL are serviced by what applications.
+# The application/services are defined in the bootstrap.yml file of individual applications
+# using the spring.application.name property.
+
+# Note that we don't proxy the calls to the authorization server. The reason being that
+# Spring cloud security would need to secure the api gateway before it can route the
+# requests using zuul
+zuul:
+  routes:
+    user-webservice: /api/user/**
+    task-webservice: /api/task/**
+    web-portal: /**
+    user:
+      path: /api/loggedinuser/**
+      stripPrefix: true
+      url: http://${authserver.hostname}:${authserver.port}/${authserver.contextPath}
+# Define the Eureka server that handles service registration
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+# Define settings for Single-Sign-On with OAuth2; this means that we need to relay the OAuth token
+# to the subsequent resources that are proxied by the Zuul api gateway.
+
+# The home definition tells us to allow anonymous access (secure: false) to the static resources that
+# are accessed through the Zuul proxy.
+
+# Remaining properties are used by the OAuth2 SSO to determine where the authorization server is and
+# what client crendentials to use to access that server.
+security:
+  oauth2:
+    sso:
+      home:
+        secure: false
+        path: /,/**/*.html
+    client:
+      accessTokenUri: http://${authserver.hostname}:${authserver.port}/${authserver.contextPath}/oauth/token
+      userAuthorizationUri: http://${authserver.hostname}:${authserver.port}/${authserver.contextPath}/oauth/authorize
+      clientId: client
+      clientSecret: secret
+# The userInfoUri is used to authenticate the user so that SSO token can be relayed forward. It needs to either be
+# a physical endpoint (defined using userInfoUri) OR can be bypassed if you use a JSON web token (JWT) that stores
+# information about grants and authentication in the token itself.
+
+# Note that the "/user" endpoint needs to provide the principle of the logged in user (/me endpoint)
+    resource:
+      userInfoUri: http://${authserver.hostname}:${authserver.port}/${authserver.contextPath}/me
+      preferTokenInfo: false
+
+# Datasource and JPA configuration to be used for using the same tokenstore as the authorization server for
+# the defined resource server. Note that there can't be 2 different root nodes, so datasource falls under the "spring" node.
+  datasource:
+    url: jdbc:mysql://docker:3306/auth
+    username: root
+    password: password
+    driver-class: com.mysql.jdbc.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    show-sql: false
+    hibernate:
+      ddl-auto: create
+
+---
+# Auth-server instance when used on Docker
+spring:
+  profiles: docker
+eureka:
+# Register our microservices to Eureka using hostnames in a Docker environment will not work, they will all get
+# one and the same hostname. Instead we configure them to use its IP address during registration with Eureka.
+  instance:
+    preferIpAddress: true
+  client:
+    serviceUrl:
+      defaultZone: http://192.168.59.103:8761/eureka/
+
+# The OAuth2 server definition that would be used to send the authorization requests to
+authserver:
+    hostname: 192.168.59.103
+    port: 8899
+    contextPath: userauth
+
+# Define the port where the API gateway server would be running. This could always be port 8080
+# since each docker container has it's own IP
+server:
+  port: 8080
