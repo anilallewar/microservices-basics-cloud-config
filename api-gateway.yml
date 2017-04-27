@@ -39,21 +39,19 @@ eureka:
 # Remaining properties are used by the OAuth2 SSO to determine where the authorization server is and
 # what client crendentials to use to access that server.
 security:
+  user:
+    password: password
   oauth2:
-    sso:
-      home:
-        secure: false
-        path: /,/**/*.html
     client:
       accessTokenUri: http://${authserver.hostname}:${authserver.port}/${authserver.contextPath}/oauth/token
       userAuthorizationUri: http://${authserver.hostname}:${authserver.port}/${authserver.contextPath}/oauth/authorize
       clientId: client
       clientSecret: secret
-# The userInfoUri is used to authenticate the user so that SSO token can be relayed forward. It needs to either be
-# a physical endpoint (defined using userInfoUri) OR can be bypassed if you use a JSON web token (JWT) that stores
-# information about grants and authentication in the token itself.
+    # The userInfoUri is used to authenticate the user so that SSO token can be relayed forward. It needs to either be
+    # a physical endpoint (defined using userInfoUri) OR can be bypassed if you use a JSON web token (JWT) that stores
+    # information about grants and authentication in the token itself.
 
-# Note that the "/user" endpoint needs to provide the principle of the logged in user (/me endpoint)
+    # Note that the "/user" endpoint needs to provide the principle of the logged in user (/me endpoint)
     resource:
       userInfoUri: http://${authserver.hostname}:${authserver.port}/${authserver.contextPath}/me
       preferTokenInfo: false
@@ -61,7 +59,7 @@ security:
 # Datasource and JPA configuration to be used for using the same tokenstore as the authorization server for
 # the defined resource server. Note that there can't be 2 different root nodes, so datasource falls under the "spring" node.
   datasource:
-    url: jdbc:mysql://docker:3306/auth
+    url: jdbc:mysql://localhost:3306/auth
     username: root
     password: password
     driver-class: com.mysql.jdbc.Driver
