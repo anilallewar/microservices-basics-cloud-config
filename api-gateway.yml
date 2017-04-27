@@ -28,7 +28,7 @@ zuul:
     login:
       path: /login
       stripPrefix: true
-      url: http://${authserver.hostname}:${authserver.port}/${authserver.contextPath}
+      url: http://${authserver.hostname}:${authserver.port}/${authserver.contextPath}/login
     web-portal: /**
     user:
       path: /api/loggedinuser/**
