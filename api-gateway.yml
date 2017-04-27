@@ -25,10 +25,6 @@ zuul:
   routes:
     user-webservice: /api/user/**
     task-webservice: /api/task/**
-    login:
-      path: /login
-      stripPrefix: true
-      url: http://${authserver.hostname}:${authserver.port}/${authserver.contextPath}
     web-portal: /**
     user:
       path: /api/loggedinuser/**
