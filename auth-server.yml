@@ -13,6 +13,10 @@ security:
   user:
     password: password
 
+logging:
+  level:
+    org.springframework.security: DEBUG
+    
 # Datasource and JPA configuration to be used for storing the OAuth authorization details
 # and token store
 spring:
