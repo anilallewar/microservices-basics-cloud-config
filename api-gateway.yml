@@ -7,26 +7,13 @@ logging:
 spring:
   aop:
     proxy-target-class: true
-  # Datasource and JPA configuration to be used for using the same tokenstore as the authorization server for
-  # the defined resource server. Note that there can't be 2 different root nodes, so datasource falls under the "spring" node.
-  datasource:
-    url: jdbc:mysql://localhost:3306/auth
-    username: root
-    password: password
-    driver-class: com.mysql.jdbc.Driver
-
-  jpa:
-    database-platform: org.hibernate.dialect.MySQLDialect
-    show-sql: false
-    hibernate:
-      ddl-auto: create
 
 # The OAuth2 server definition that would be used to send the authorization requests to
 authserver:
     hostname: localhost
     port: 8899
     contextPath: userauth
-    
+
 # Define settings for Single-Sign-On with OAuth2; this means that we need to relay the OAuth token
 # to the subsequent resources that are proxied by the Zuul api gateway.
 
