@@ -24,13 +24,13 @@ authserver:
 # what client crendentials to use to access that server.
 security:
   user:
-    password: password
+    password: none
   oauth2:
     client:
       accessTokenUri: http://${authserver.hostname}:${authserver.port}/${authserver.contextPath}/oauth/token
       userAuthorizationUri: http://${authserver.hostname}:${authserver.port}/${authserver.contextPath}/oauth/authorize
-      clientId: client
-      clientSecret: secret
+      clientId: acme
+      clientSecret: acmesecret
     resource:
       jwt:
         keyValue: |
@@ -51,13 +51,20 @@ server:
 # requests using zuul
 zuul:
   routes:
-    user-webservice: /api/user/**
-    task-webservice: /api/task/**
-    web-portal: /**
+    user-service:
+      path: /user-service/**
+      url: http://localhost:8081/user-service/
+      sensitiveHeaders:
+    task-service:
+      path: /task-service/**
+      url: http://localhost:8082/task-service/
+      sensitiveHeaders:
     user:
       path: /api/loggedinuser/**
-      stripPrefix: true
-      url: http://${authserver.hostname}:${authserver.port}/${authserver.contextPath}
+      url: http://${authserver.hostname}:${authserver.port}/${authserver.contextPath}/
+    ui:
+      path: /**
+      url: http://localhost:8090/portal/
 # Define the Eureka server that handles service registration
 eureka:
   client:
