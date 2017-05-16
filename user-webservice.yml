@@ -1,8 +1,7 @@
 server:
   port: 8081
   contextPath: /user-service
-  use-forward-headers: true
-
+  
 eureka:
   client:
     serviceUrl:
