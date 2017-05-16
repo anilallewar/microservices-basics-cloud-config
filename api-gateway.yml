@@ -64,6 +64,7 @@ zuul:
       sensitiveHeaders:
     user:
       path: /api/loggedinuser/**
+      stripPrefix: true
       url: http://${authserver.hostname}:${authserver.port}/${authserver.contextPath}/
     ui:
       path: /**
