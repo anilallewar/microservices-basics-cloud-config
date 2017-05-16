@@ -1,6 +1,7 @@
+# The portal is the root app since all the UI (at /** path) is maintained here; so we don't provide
+# any context root for the UI application
 server:
   port: 8090
-  contextPath: /portal
 
 eureka:
   client:
