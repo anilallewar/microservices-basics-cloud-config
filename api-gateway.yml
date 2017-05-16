@@ -50,13 +50,16 @@ server:
 # Spring cloud security would need to secure the api gateway before it can route the
 # requests using zuul
 zuul:
+  ignoredServices: '*'
   routes:
     user-service:
       path: /user-service/**
+      stripPrefix: false
       serviceId: user-webservice
       sensitiveHeaders:
     task-service:
       path: /task-service/**
+      stripPrefix: false
       serviceId: task-webservice
       sensitiveHeaders:
     user:
@@ -64,6 +67,7 @@ zuul:
       url: http://${authserver.hostname}:${authserver.port}/${authserver.contextPath}/
     ui:
       path: /**
+      stripPrefix: false
       serviceId: web-portal
 
 # Since our gateway is using Eureka (@EnableEurekaClient), the Gateway using Netfix Ribbon to make
