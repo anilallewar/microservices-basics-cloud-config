@@ -53,18 +53,31 @@ zuul:
   routes:
     user-service:
       path: /user-service/**
-      url: http://localhost:8081/user-service/
+      serviceId: user-webservice
       sensitiveHeaders:
     task-service:
       path: /task-service/**
-      url: http://localhost:8082/task-service/
+      serviceId: task-webservice
       sensitiveHeaders:
     user:
       path: /api/loggedinuser/**
       url: http://${authserver.hostname}:${authserver.port}/${authserver.contextPath}/
     ui:
       path: /**
-      url: http://localhost:8090/portal/
+      serviceId: web-portal
+
+# Since our gateway is using Eureka (@EnableEurekaClient), the Gateway using Netfix Ribbon to make
+# the actual call. The ribbon call is wrapped within Hystrix so that we can handle any errors.
+# Hystrix has low delay tolerance threshold and hence we bump it to 5 seconds.
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          strategy: SEMAPHORE
+          semaphore:
+            timeoutInMilliseconds: 5000
+
 # Define the Eureka server that handles service registration
 eureka:
   client:
