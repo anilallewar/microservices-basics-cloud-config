@@ -31,9 +31,9 @@ security:
       userAuthorizationUri: http://${authserver.hostname}:${authserver.port}/${authserver.contextPath}/oauth/authorize
       clientId: acme
       clientSecret: acmesecret
-      registered-redirect-uri: http://localhost:8765/index.html
-      pre-established-redirect-uri: http://localhost:8765/index.html
-      use-current-uri: false      
+      registered-redirect-uri: http://localhost:8765/login
+      pre-established-redirect-uri: http://localhost:8765/login
+      use-current-uri: false
     resource:
       jwt:
         keyValue: |
