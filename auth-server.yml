@@ -12,11 +12,13 @@ eureka:
 security:
   user:
     password: password
+  oauth2:
+    redirectUrl: http://localhost:8090/index.html
 
 logging:
   level:
     org.springframework.security: DEBUG
-    
+
 # Datasource and JPA configuration to be used for storing the OAuth authorization details
 # and token store
 spring:
