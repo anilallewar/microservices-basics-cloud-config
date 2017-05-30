@@ -16,7 +16,7 @@ security:
 logging:
   level:
     org.springframework.security: DEBUG
-    
+
 # Datasource and JPA configuration to be used for storing the OAuth authorization details
 # and token store
 spring:
@@ -43,4 +43,4 @@ eureka:
     preferIpAddress: true
   client:
     serviceUrl:
-      defaultZone: http://192.168.59.103:8761/eureka/
+      defaultZone: http://eurekaregistry:8761/eureka/

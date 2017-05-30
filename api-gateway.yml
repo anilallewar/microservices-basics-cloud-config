@@ -103,15 +103,15 @@ eureka:
     preferIpAddress: true
   client:
     serviceUrl:
-      defaultZone: http://192.168.59.103:8761/eureka/
+      defaultZone: http://eurekaregistry:8761/eureka/
 
 # The OAuth2 server definition that would be used to send the authorization requests to
 authserver:
-    hostname: 192.168.59.103
+    hostname: authserver
     port: 8899
     contextPath: userauth
 
 # Define the port where the API gateway server would be running. This could always be port 8080
 # since each docker container has it's own IP
 server:
-  port: 8080
+  port: 8765
