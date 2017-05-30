@@ -13,9 +13,8 @@ logging:
     org.springframework.security: DEBUG
 
 turbine:
-  aggregator:
-    clusterConfig: hystrix
   appConfig: task-webservice
+  clusterNameExpression: "'default'"
 ---
 
 # api-gateway instance when used on Docker
