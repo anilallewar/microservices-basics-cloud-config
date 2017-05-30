@@ -11,6 +11,11 @@ eureka:
 logging:
   level:
     org.springframework.security: DEBUG
+
+turbine:
+  aggregator:
+    clusterConfig: hystrix
+  appConfig: task-webservice
 ---
 
 # api-gateway instance when used on Docker
