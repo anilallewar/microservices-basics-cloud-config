@@ -1,6 +1,5 @@
 server:
   port: 8083
-  contextPath: /comments-service
 
 eureka:
   client:
