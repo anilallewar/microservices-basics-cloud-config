@@ -11,12 +11,17 @@ spring:
     baseUrl: http://localhost:9411/
   sleuth:
     sampler:
+# Generally the tracing data volume can be quite high; so we can tell Spring sleuth to
+# sample only some percentage of requests by specifying a double value between 0.0 and 1.0.
+
+# For testing purposes, we are sampling all requests (1.0) but generally in production you should
+# sample only 10-20% of the data or write custome strategy to sample say only in case of 500 errors.
       percentage: 1.0
 
 # When enabled=false, traces log to the console. Comment to send to zipkin
 sample:
   zipkin:
-    enabled: false
+    enabled: true
 
 # The OAuth2 server definition that would be used to send the authorization requests to
 authserver:

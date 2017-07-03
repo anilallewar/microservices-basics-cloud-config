@@ -17,7 +17,7 @@ spring:
 # When enabled=false, traces log to the console. Comment to send to zipkin
 sample:
   zipkin:
-    enabled: false
+    enabled: true
 
 # Note that we will use the JWT token to get user data
 security:
