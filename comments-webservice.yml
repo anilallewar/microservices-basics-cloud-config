@@ -6,6 +6,18 @@ eureka:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/
 
+spring:
+  zipkin:
+    baseUrl: http://localhost:9411/
+  sleuth:
+    sampler:
+      percentage: 1.0
+
+# When enabled=false, traces log to the console. Comment to send to zipkin
+sample:
+  zipkin:
+    enabled: true
+
 # Note that we will use the JWT token to get user data
 security:
   oauth2:
@@ -19,6 +31,9 @@ security:
 # comments-webservice instance when used on Docker
 spring:
   profiles: docker
+  zipkin:
+    baseUrl: http://zipkin-server:9411/
+
 eureka:
 # Register our microservices to Eureka using hostnames in a Docker environment will not work, they will all get
 # one and the same hostname. Instead we configure them to use its IP address during registration with Eureka.
