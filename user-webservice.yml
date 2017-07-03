@@ -17,7 +17,7 @@ spring:
 # When enabled=false, traces log to the console. Comment to send to zipkin
 sample:
   zipkin:
-    enabled: true
+    enabled: false
 
 # Note that we will use the JWT token to get user data
 security:
@@ -34,7 +34,7 @@ spring:
   profiles: docker
   zipkin:
     baseUrl: http://zipkin-server:9411/
-    
+
 eureka:
 # Register our microservices to Eureka using hostnames in a Docker environment will not work, they will all get
 # one and the same hostname. Instead we configure them to use its IP address during registration with Eureka.

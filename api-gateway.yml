@@ -16,7 +16,7 @@ spring:
 # When enabled=false, traces log to the console. Comment to send to zipkin
 sample:
   zipkin:
-    enabled: true
+    enabled: false
 
 # The OAuth2 server definition that would be used to send the authorization requests to
 authserver:
