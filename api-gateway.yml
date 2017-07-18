@@ -111,7 +111,7 @@ eureka:
 spring:
   profiles: docker
   zipkin:
-    baseUrl: http://zipkin-server:9411/
+    baseUrl: http://zipkinserver:9411/
 
 eureka:
 # Register our microservices to Eureka using hostnames in a Docker environment will not work, they will all get
