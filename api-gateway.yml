@@ -41,14 +41,14 @@ security:
   user:
     password: none
   oauth2:
-    client:
-      accessTokenUri: http://${authserver.hostname}:${authserver.port}/${authserver.contextPath}/oauth/token
-      userAuthorizationUri: http://${authserver.hostname}:${authserver.port}/${authserver.contextPath}/oauth/authorize
-      clientId: acme
-      clientSecret: acmesecret
-      registered-redirect-uri: http://localhost:8765/login
-      pre-established-redirect-uri: http://localhost:8765/login
-      use-current-uri: false
+#    client:
+#      accessTokenUri: http://${authserver.hostname}:${authserver.port}/${authserver.contextPath}/oauth/token
+#      userAuthorizationUri: http://${authserver.hostname}:${authserver.port}/${authserver.contextPath}/oauth/authorize
+#      clientId: acme
+#      clientSecret: acmesecret
+#      registered-redirect-uri: http://localhost:8765/login
+#      pre-established-redirect-uri: http://localhost:8765/login
+#      use-current-uri: false
     resource:
       jwt:
         keyValue: |
@@ -80,25 +80,40 @@ zuul:
       serviceId: task-webservice
       sensitiveHeaders:
     user:
-      path: /api/loggedinuser/**
-      stripPrefix: true
-      url: http://${authserver.hostname}:${authserver.port}/${authserver.contextPath}/
-    ui:
-      path: /**
+      path: /userauth/**
       stripPrefix: false
-      serviceId: web-portal
+      serviceId: auth-server
+      sensitiveHeaders:
+#      path: /api/loggedinuser/**
+#      stripPrefix: true
+#      url: http://${authserver.hostname}:${authserver.port}/${authserver.contextPath}/
+#    ui:
+#      path: /**
+#      stripPrefix: false
+#      serviceId: web-portal
+    eureka:
+      user-webservice:
+        semaphore:
+          maxSemaphores: 200
+      task-webservice:
+        semaphore:
+          maxSemaphores: 200
 
-# Since our gateway is using Eureka (@EnableEurekaClient), the Gateway using Netfix Ribbon to make
+# Since our gateway is using Eureka (@EnableEurekaClient), internally it is using Netfix Ribbon to make
 # the actual call. The ribbon call is wrapped within Hystrix so that we can handle any errors.
-# Hystrix has low delay tolerance threshold and hence we bump it to 5 seconds.
+# Hystrix has low delay tolerance threshold of 1 second and hence disable it to get around the problem of
+# requests timing out.
 hystrix:
   command:
     default:
       execution:
-        isolation:
-          strategy: SEMAPHORE
-          semaphore:
-            timeoutInMilliseconds: 5000
+        timeout:
+          enabled: false
+
+# The timeouts used by the internal ribbon client used by Zuul, note that the values are in milliseconds
+ribbon:
+  ReadTimeout: 60000
+  ConnectTimeout: 60000
 
 # Define the Eureka server that handles service registration
 eureka:
