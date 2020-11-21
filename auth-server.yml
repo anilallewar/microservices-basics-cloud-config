@@ -25,12 +25,14 @@ spring:
     username: root
     password: password
     driver-class: com.mysql.jdbc.Driver
+    # Needed since Spring boot doesn't initialize in case of non-embedded database
+    initialization-mode: always
 
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect
     show-sql: false
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
 
 ---
 
